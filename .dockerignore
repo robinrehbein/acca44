@@ -1,0 +1,17 @@
+.git
+**/node_modules
+**/dist
+**/build
+**/.vite
+.env
+.env.*
+!.env.example
+assets
+backups
+*.log
+playwright-report
+test-results
+**/dashboard
+**/src/gql
+
+**/.vendure

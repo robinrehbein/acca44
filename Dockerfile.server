@@ -1,0 +1,15 @@
+FROM node:22.22.0-bookworm-slim
+WORKDIR /app
+ENV NODE_ENV=development
+ENV VENDURE_DISABLE_TELEMETRY=true
+COPY package.json package-lock.json ./
+COPY apps/server/package.json apps/server/package.json
+COPY apps/storefront/package.json apps/storefront/package.json
+RUN npm ci
+COPY apps/server apps/server
+RUN SUPERADMIN_USERNAME=build SUPERADMIN_PASSWORD=build-only COOKIE_SECRET=build-only DB_PASSWORD=build-only ASSET_UPLOAD_DIR=/tmp/assets npm run build -w @acca44/server
+ENV NODE_ENV=production
+RUN mkdir -p /app/assets && chown node:node /app/assets
+USER node
+EXPOSE 3001
+CMD ["npm", "run", "start", "-w", "@acca44/server"]

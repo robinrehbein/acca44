@@ -1,0 +1,38 @@
+{
+  "name": "@acca44/server",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "ts-node src/index.ts",
+    "dev:worker": "ts-node src/worker.ts",
+    "build": "tsc && vite build",
+    "build:server": "tsc",
+    "build:dashboard": "vite build",
+    "start": "node dist/index.js",
+    "start:worker": "node dist/worker.js",
+    "migrate": "node dist/migrate.js",
+    "seed": "node dist/seed.js",
+    "migrate:dev": "ts-node src/migrate.ts",
+    "seed:dev": "ts-node src/seed.ts",
+    "migration:generate": "ts-node src/generate-migration.ts",
+    "test": "node --import tsx --test tests/*.test.ts",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@vendure/core": "3.8.0",
+    "@vendure/common": "3.8.0",
+    "@vendure/asset-server-plugin": "3.8.0",
+    "@vendure/dashboard": "3.8.0",
+    "dotenv": "^16.6.1",
+    "pg": "^8.16.3",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2"
+  },
+  "devDependencies": {
+    "@types/node": "^22.0.0",
+    "ts-node": "^10.9.2",
+    "typescript": "~5.8.3",
+    "vite": "6.4.5",
+    "tsx": "4.19.4"
+  }
+}
