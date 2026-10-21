@@ -14,3 +14,6 @@ Approved scope: complete free Vendure prototype, German storefront and standard 
 - Independent review: no concrete must-fix found; direct React Router/Vite updates applied. Remaining upstream dependency advisories documented separately.
 - Live local browser checkout passed with synthetic order JZRAKQC18CH7KRAW, EUR143.90; local real API stock tests passed six groups (details in integration-results).
 - Upstream3.8.0 split movement rows store line total at every location. Public blocking StockMovementEvent handler normalizes movement quantities inside the same transaction; inventory counts remain service-managed. Ruling: required to preserve accurate split-order history; cost if wrong is transactional fulfillment rejection (fail closed), covered by real API tests.
+- Initial dev CI passed: https://github.com/robinrehbein/acca44/actions/runs/39635056962 (cca75ff).
+- Both images built; complete local Compose startup, explicit seed, all six API groups and full stack restart persistence passed.
+- First actual Coolify deploy failed before build: generated SERVICE_URL variables absent from build-time.env. Reproduced in regression test with missing URLs (RED); retain runtime generation but provide agreed public HTTPS URL defaults for build-time interpolation (GREEN).

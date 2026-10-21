@@ -2,11 +2,16 @@
   "name": "acca44",
   "version": "0.1.0",
   "private": true,
-  "workspaces": ["apps/server", "apps/storefront"],
+  "workspaces": [
+    "apps/server",
+    "apps/storefront"
+  ],
   "scripts": {
     "build": "npm run build --workspaces --if-present",
-    "test": "npm run test --workspaces --if-present",
+    "test": "node --test tests/deployment-config.test.mjs && npm run test --workspaces --if-present",
     "typecheck": "npm run typecheck --workspaces --if-present"
   },
-  "engines": {"node": ">=22.22.0 <27"}
+  "engines": {
+    "node": ">=22.22.0 <27"
+  }
 }
