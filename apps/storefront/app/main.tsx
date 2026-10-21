@@ -11,6 +11,7 @@ import {
 } from "react-router-dom";
 import type { Operation } from "../lib/operations";
 import { shop } from "../lib/api";
+import { productImage } from "../lib/product-images";
 import "./style.css";
 type Variant = {
   id: string;
@@ -57,12 +58,6 @@ const money = (amount: number) =>
   new Intl.NumberFormat("de-DE", { style: "currency", currency: "EUR" }).format(
     amount / 100,
   );
-const art = (name: string) =>
-  /tasch|bag|tote/i.test(name)
-    ? "/images/bag-demo.jpg"
-    : /gürtel|belt/i.test(name)
-      ? "/images/belt-demo.jpg"
-      : "/images/shoe-demo.jpg";
 const Context = createContext<{
   order: Order | null;
   refresh: () => Promise<void>;
@@ -209,7 +204,7 @@ function Catalog() {
         <div className="hero-art">
           <span className="circle" />
           <img
-            src="/images/shoe-demo.jpg"
+            src={productImage("kamo-gutsu-riva")}
             alt="KI-generiertes Demobild eines fiktiven Sneakerpaars"
           />
           <span className="art-note">
@@ -298,7 +293,7 @@ function Catalog() {
               >
                 <div className={`product-art tone-${i % 4}`}>
                   <img
-                    src={art(item.productName)}
+                    src={productImage(item.slug)}
                     alt={`KI-generiertes Demobild für ${item.productName}`}
                     loading="lazy"
                   />
@@ -394,7 +389,7 @@ function Detail() {
       <div className="detail">
         <div className="detail-art">
           <img
-            src={art(product.name)}
+            src={productImage(product.slug)}
             alt={`KI-generiertes Demobild für ${product.name}`}
           />
           <small>KI-generiertes Demobild · Kein Originalproduktfoto</small>
@@ -486,8 +481,8 @@ function Cart() {
               <article className="cart-line" key={line.id}>
                 <Link to={`/produkt/${line.productVariant.product.slug}`}>
                   <img
-                    src={art(line.productVariant.name)}
-                    alt="Produktillustration"
+                    src={productImage(line.productVariant.product.slug)}
+                    alt={`KI-generiertes Demobild für ${line.productVariant.name}`}
                   />
                 </Link>
                 <div>
