@@ -31,3 +31,11 @@ The mutating script refuses to run without `TEST_ALLOW_MUTATIONS=true` and refus
 All checkout, inventory, payment-state, fulfillment and cancellation assertions use real Shop/Admin GraphQL APIs and persisted PostgreSQL state, not mocks. This script does not contact an external payment provider or send email. Vendure's public stock-movement API does not expose movement locations; sale/release rows also do not expose order lines. Therefore the script correlates new movement IDs on an isolated variant, checks movement quantity multisets, and independently asserts each location's persisted stock/allocation values. It does not claim direct per-movement location API inspection.
 
 The standard Dashboard build is verified here; browser/UI checks and Coolify deployment evidence belong to their separate verification records. PostgreSQL emits an upstream `pg` concurrent-query deprecation warning; no assertion failed because of it.
+
+## Container and deployed development evidence
+
+The complete Docker Compose stack (PostgreSQL, migration job, server, worker and storefront) built and started locally. Explicit seeding and all six integration groups passed against that stack. Restarting the persistent services preserved catalog, orders and stock.
+
+On 2026-10-21 the development deployment served valid HTTPS at `https://acca44.robinrehbein.de` and `https://api.acca44.robinrehbein.de/dashboard/`. Explicit additive seeding produced 12 demo products. `TEST_ALLOW_MUTATIONS=true TEST_ALLOW_REMOTE_MUTATIONS=true node tests/deployed-shop-smoke.mjs` passed through the public storefront gateway: order `58EY5JV71LJKEUPT` reached `PaymentSettled` using only the simulated payment handler. An independent client had no active cart before or after checkout, and the paid client's cart cleared. This remote check covers checkout and session isolation; the six detailed inventory lifecycle groups above were tested locally, not rerun remotely.
+
+Photorealistic generated shoe, bag and belt images are labelled as AI-generated demo imagery; they are not original manufacturer product photographs. See [image provenance](image-assets.md).

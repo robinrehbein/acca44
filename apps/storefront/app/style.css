@@ -805,3 +805,49 @@ label select {
     padding-block: 45px;
   }
 }
+
+/* Generated editorial product photographs share a warm limestone backdrop. */
+.hero-art {
+  border-radius: 48% 48% 0 0;
+  isolation: isolate;
+}
+.hero-art > img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: none;
+  filter: none;
+  z-index: -1;
+}
+.hero-art .circle {
+  display: none;
+}
+.hero-art .art-note {
+  background: #faf8f3db;
+  padding: 10px 13px;
+  right: 15px;
+  bottom: 45px;
+}
+.product-art img {
+  height: 100%;
+  object-fit: cover;
+}
+.detail-art img {
+  aspect-ratio: 1;
+  object-fit: cover;
+}
+.detail-art small {
+  padding: 14px;
+  text-align: center;
+}
+@media (max-width: 560px) {
+  .hero-art img {
+    max-height: none;
+  }
+  .product-art {
+    height: auto;
+    aspect-ratio: 1;
+  }
+}

@@ -59,10 +59,10 @@ const money = (amount: number) =>
   );
 const art = (name: string) =>
   /tasch|bag|tote/i.test(name)
-    ? "/images/bag.svg"
+    ? "/images/bag-demo.jpg"
     : /gürtel|belt/i.test(name)
-      ? "/images/belt.svg"
-      : "/images/shoe.svg";
+      ? "/images/belt-demo.jpg"
+      : "/images/shoe-demo.jpg";
 const Context = createContext<{
   order: Order | null;
   refresh: () => Promise<void>;
@@ -209,8 +209,8 @@ function Catalog() {
         <div className="hero-art">
           <span className="circle" />
           <img
-            src="/images/shoe.svg"
-            alt="Illustration eines cognacfarbenen Lederschuhs"
+            src="/images/shoe-demo.jpg"
+            alt="KI-generiertes Demobild eines fiktiven Sneakerpaars"
           />
           <span className="art-note">
             Weniger Trend.
@@ -299,7 +299,7 @@ function Catalog() {
                 <div className={`product-art tone-${i % 4}`}>
                   <img
                     src={art(item.productName)}
-                    alt={`Illustration: ${item.productName}`}
+                    alt={`KI-generiertes Demobild für ${item.productName}`}
                     loading="lazy"
                   />
                   <span className="round-arrow">↗</span>
@@ -312,7 +312,7 @@ function Catalog() {
                     )}
                   </span>
                 </div>
-                <p>Mit Charakter. Für jeden Tag.</p>
+                <p>KI-generiertes Demobild · Fiktives Produkt</p>
               </Link>
             ))}
           </div>
@@ -393,8 +393,11 @@ function Detail() {
       </Link>
       <div className="detail">
         <div className="detail-art">
-          <img src={art(product.name)} alt={`Illustration: ${product.name}`} />
-          <small>Fiktives Demoprodukt · Illustration</small>
+          <img
+            src={art(product.name)}
+            alt={`KI-generiertes Demobild für ${product.name}`}
+          />
+          <small>KI-generiertes Demobild · Kein Originalproduktfoto</small>
         </div>
         <div className="detail-info">
           <p className="eyebrow">DIE ACCA44 AUSWAHL</p>
