@@ -140,7 +140,7 @@ function App() {
           Sondern bei Menschen mit einem Gespür dafür.
         </p>
         <p>
-          Prototyp · Alle Produkte und Preise sind fiktiv.
+          Prototyp · Produktauswahl und Preise zur Ansicht.
           <br />
           Kein Verkauf, keine Zahlung, kein E-Mail-Versand.
         </p>
