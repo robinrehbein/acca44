@@ -58,26 +58,30 @@ async function seed() {
         }
         const products = app.get(ProductService), variants = app.get(ProductVariantService);
         const groups = app.get(ProductOptionGroupService), options = app.get(ProductOptionService);
-        for (const [productIndex, item] of demoCatalog.entries()) {
+        // Hide only the known fictional seed products; retain their records and order history.
+        for (const slug of ['kamo-gutsu-riva','kamo-gutsu-porto','kamo-gutsu-lido','kamo-gutsu-monte','satorisan-seebrise','satorisan-ufer','satorisan-waldpfad','satorisan-morgenlicht','acca-tasche-hafen','acca-tasche-promenade','acca-guertel-klassik','acca-guertel-geflecht']) {
+            const old = await products.findOneBySlug(localCtx, slug);
+            if (old?.enabled) await products.update(localCtx, { id: old.id, enabled: false });
+        }
+        for (const item of demoCatalog) {
             let product = await products.findOneBySlug(localCtx, item.slug, ['optionGroups']);
-            product ??= await products.create(localCtx, { enabled:true, translations:[{ languageCode:LanguageCode.de, name:`${item.brand} ${item.name}`, slug:item.slug, description:'<p>Fiktives Modell für den ACCA44-Prototyp. Demo-Preis und Demo-Bestand, kein reales Markenangebot.</p>' }] });
+            product ??= await products.create(localCtx, { enabled:true, translations:[{ languageCode:LanguageCode.de, name:item.name, slug:item.slug, description:`<p>${item.description}</p>` }] });
             const optionMaps: Record<string, Map<string, ID>> = {};
             for (const [dimension, names] of [['color',item.colors], ['size',item.sizes]] as const) {
                 const groupCode = `${item.slug}-${dimension}`;
-                const group = (await groups.findAll(localCtx, {filter:{code:{eq:groupCode}}})).items[0] ?? await groups.create(localCtx, { code:`${item.slug}-${dimension}`, translations:[{ languageCode:LanguageCode.de, name:dimension === 'color' ? 'Farbe' : item.category === 'guertel' ? 'Länge (cm)' : 'Größe' }] });
+                const group = (await groups.findAll(localCtx, {filter:{code:{eq:groupCode}}})).items[0] ?? await groups.create(localCtx, { code:`${item.slug}-${dimension}`, translations:[{ languageCode:LanguageCode.de, name:dimension === 'color' ? 'Farbe' : 'Größe' }] });
                 if (!product.optionGroups?.some(g => g.id === group.id)) await products.addOptionGroupToProduct(localCtx, product.id, group.id);
                 optionMaps[dimension] = new Map();
                 for (const name of names) { const option = (await options.findAll(localCtx, {filter:{code:{eq:code(name)}}}, group.id)).items[0] ?? await options.create(localCtx, group, { code:code(name), translations:[{ languageCode:LanguageCode.de, name }] }); optionMaps[dimension].set(name,option.id); }
             }
-            for (const [colorIndex,color] of item.colors.entries()) for (const [sizeIndex,size] of item.sizes.entries()) {
+            for (const color of item.colors) for (const size of item.sizes) {
                 const sku = `${item.slug}-${color}-${size}`.toUpperCase();
                 if ((await variants.findAll(localCtx, {filter:{sku:{eq:sku}}})).items.length) continue;
-                const depleted = sizeIndex === 0 && colorIndex === 0;
                 await variants.create(localCtx, [{ productId:product.id, sku, price:item.price, taxCategoryId:tax.id, trackInventory:GlobalFlag.TRUE,
                     optionIds:[optionMaps.color.get(color)!,optionMaps.size.get(size)!],
-                    facetValueIds:await Promise.all([facetValue('brand',item.brand),facetValue('category',item.category),facetValue('color',color),facetValue('size',size)]),
-                    translations:[{ languageCode:LanguageCode.de, name:`${item.brand} ${item.name} · ${color} · ${size}` }],
-                    stockLevels:[{stockLocationId:lindau.id,stockOnHand:depleted ? 0 : 3 + (productIndex % 3)}, {stockLocationId:friedrichshafen.id,stockOnHand:depleted ? (productIndex % 2 === 0 ? 0 : 2) : 2}],
+                    facetValueIds:await Promise.all([facetValue('category',item.category),facetValue('color',color),facetValue('size',size)]),
+                    translations:[{ languageCode:LanguageCode.de, name:`${item.name} · ${color} · ${size}` }],
+                    stockLevels:[{stockLocationId:lindau.id,stockOnHand:item.stockPerStore[size]}, {stockLocationId:friedrichshafen.id,stockOnHand:item.stockPerStore[size]}],
                 }]);
             }
         }
@@ -95,7 +99,7 @@ async function seed() {
             permissions:[Permission.Authenticated,Permission.ReadCatalog,Permission.CreateCatalog,Permission.UpdateCatalog,Permission.CreateAsset,Permission.ReadAsset,Permission.UpdateAsset,Permission.ReadStockLocation,Permission.UpdateStockLocation,Permission.ReadOrder,Permission.UpdateOrder,Permission.ReadCustomer,Permission.ReadShippingMethod,Permission.ReadPaymentMethod,Permission.ReadCountry,Permission.ReadZone,Permission.ReadTaxCategory,Permission.ReadTaxRate],
         });
         if (!(await admins.findAll(localCtx, {take:100})).items.some(a => a.emailAddress === 'operator@acca44.example')) await admins.create(localCtx, { emailAddress:'operator@acca44.example', firstName:'Demo',lastName:'Team', password:secret('DEMO_OPERATOR_PASSWORD'),roleIds:[role.id] });
-        console.log('Demo seed complete: 12 products, additive; existing stock and orders preserved.');
+        console.log('Seed complete: 6 products; initial quantities apply per store; existing stock and orders preserved.');
     } finally { await app.close(); }
 }
 seed().catch(error => { console.error(error); process.exitCode = 1; });

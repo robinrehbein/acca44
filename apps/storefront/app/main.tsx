@@ -91,7 +91,7 @@ function App() {
   return (
     <Context.Provider value={{ order, refresh, busy, act }}>
       <div className="demo">
-        DEMO-SHOP · Fiktives Sortiment · Keine echte Bestellung oder Zahlung
+        DEMO-SHOP · Prototyp · Keine echte Bestellung oder Zahlung
       </div>
       <header>
         <Link className="logo" to="/">
@@ -204,8 +204,8 @@ function Catalog() {
         <div className="hero-art">
           <span className="circle" />
           <img
-            src={productImage("kamo-gutsu-riva")}
-            alt="KI-generiertes Demobild eines fiktiven Sneakerpaars"
+            src={productImage("w1122")}
+            alt="Produktfoto W1122"
           />
           <span className="art-note">
             Weniger Trend.
@@ -294,7 +294,7 @@ function Catalog() {
                 <div className={`product-art tone-${i % 4}`}>
                   <img
                     src={productImage(item.slug)}
-                    alt={`KI-generiertes Demobild für ${item.productName}`}
+                    alt={`Produktbild für ${item.productName}`}
                     loading="lazy"
                   />
                   <span className="round-arrow">↗</span>
@@ -307,7 +307,7 @@ function Catalog() {
                     )}
                   </span>
                 </div>
-                <p>KI-generiertes Demobild · Fiktives Produkt</p>
+                <p>ACCA44 Auswahl</p>
               </Link>
             ))}
           </div>
@@ -390,9 +390,9 @@ function Detail() {
         <div className="detail-art">
           <img
             src={productImage(product.slug)}
-            alt={`KI-generiertes Demobild für ${product.name}`}
+            alt={`Produktbild für ${product.name}`}
           />
-          <small>KI-generiertes Demobild · Kein Originalproduktfoto</small>
+          <small>KI-bearbeitetes Produktbild · Details können abweichen</small>
         </div>
         <div className="detail-info">
           <p className="eyebrow">DIE ACCA44 AUSWAHL</p>
@@ -403,7 +403,7 @@ function Detail() {
             )}
           </p>
           <p className="muted">
-            Demo-Preis inkl. MwSt. · Versandkosten an der Kasse
+            Preis inkl. MwSt. · Versandkosten an der Kasse
           </p>
           <p>{product.description.replace(/<[^>]*>/g, "")}</p>
           <div className="tags">
@@ -482,7 +482,7 @@ function Cart() {
                 <Link to={`/produkt/${line.productVariant.product.slug}`}>
                   <img
                     src={productImage(line.productVariant.product.slug)}
-                    alt={`KI-generiertes Demobild für ${line.productVariant.name}`}
+                    alt={`Produktbild für ${line.productVariant.name}`}
                   />
                 </Link>
                 <div>

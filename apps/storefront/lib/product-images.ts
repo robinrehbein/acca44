@@ -1,20 +1,11 @@
-/** Generated illustrative images for fictional demo models, not manufacturer photos. */
-export const productImages: Record<string, string> = Object.fromEntries(
-  [
-    "kamo-gutsu-riva",
-    "kamo-gutsu-porto",
-    "kamo-gutsu-lido",
-    "kamo-gutsu-monte",
-    "satorisan-seebrise",
-    "satorisan-ufer",
-    "satorisan-waldpfad",
-    "satorisan-morgenlicht",
-    "acca-tasche-hafen",
-    "acca-tasche-promenade",
-    "acca-guertel-klassik",
-    "acca-guertel-geflecht",
-  ].map((slug) => [slug, `/images/products/${slug}.jpg`]),
-);
-
+/** Product photos are based on supplied reference photographs. */
+export const productImages: Record<string, string> = {
+  w1122: '/images/products/w1122.png',
+  w1150: '/images/products/w1150.png',
+  w1181: '/images/products/w1181.png',
+  w1160: '/images/products/w1160.png',
+  w373: '/images/products/w373.png',
+  w1164: '/images/products/w1164.png',
+};
 export const productImage = (slug: string) =>
-  productImages[slug] ?? "/images/shoe-demo.jpg";
+  productImages[slug] ?? '/images/shoe.svg';
