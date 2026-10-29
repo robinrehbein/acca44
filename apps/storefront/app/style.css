@@ -860,3 +860,14 @@ label select {
 .gallery-thumbnails button { border: 1px solid transparent; padding: 2px; width: 64px; height: 64px; background: #f8f4ec; cursor: pointer; }
 .gallery-thumbnails button[aria-pressed="true"] { border-color: #493a31; }
 .gallery-thumbnails img { width: 100%; height: 100%; object-fit: contain; }
+
+/* Match the portrait photographs so the card has no contrasting side bands. */
+.product-art {
+  height: auto;
+  aspect-ratio: 3 / 4;
+}
+.product-art img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
