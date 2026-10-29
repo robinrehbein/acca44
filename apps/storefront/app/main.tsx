@@ -438,7 +438,7 @@ function Detail() {
                   value={v.id}
                   disabled={v.stockLevel === "OUT_OF_STOCK"}
                 >
-                  {v.name}
+                  {displayProductName(v.name)}
                   {v.stockLevel === "OUT_OF_STOCK" ? " · Ausverkauft" : ""}
                 </option>
               ))}
