@@ -9,3 +9,8 @@ export const productImages: Record<string, string> = {
 };
 export const productImage = (slug: string) =>
   productImages[slug] ?? '/images/shoe.svg';
+
+export const productGallery = (slug: string): string[] =>
+  productImages[slug] ? [productImages[slug], ...[1, 2, 3].map(i => `/images/products/${slug}-${i}.png`)] : [productImage(slug)];
+
+export const displayProductName = (name: string) => name.replace(/^W\d+\s+/i, '');

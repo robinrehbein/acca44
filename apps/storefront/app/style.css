@@ -851,3 +851,12 @@ label select {
     aspect-ratio: 1;
   }
 }
+
+/* Keep the entire shoe visible within a consistent frame. */
+.hero-art > img, .product-art img, .detail-art > img { object-fit: contain; background: #f8f4ec; }
+.product-card:hover img { transform: scale(1.025); }
+.detail-art > img { aspect-ratio: 1; }
+.gallery-thumbnails { display: flex; justify-content: center; gap: 8px; padding: 12px; flex-wrap: wrap; }
+.gallery-thumbnails button { border: 1px solid transparent; padding: 2px; width: 64px; height: 64px; background: #f8f4ec; cursor: pointer; }
+.gallery-thumbnails button[aria-pressed="true"] { border-color: #493a31; }
+.gallery-thumbnails img { width: 100%; height: 100%; object-fit: contain; }

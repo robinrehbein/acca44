@@ -11,7 +11,7 @@ import {
 } from "react-router-dom";
 import type { Operation } from "../lib/operations";
 import { shop } from "../lib/api";
-import { productImage } from "../lib/product-images";
+import { productImage, productGallery, displayProductName } from "../lib/product-images";
 import "./style.css";
 type Variant = {
   id: string;
@@ -300,7 +300,7 @@ function Catalog() {
                   <span className="round-arrow">↗</span>
                 </div>
                 <div className="card-line">
-                  <h3>{item.productName}</h3>
+                  <h3>{displayProductName(item.productName)}</h3>
                   <span>
                     {money(
                       item.priceWithTax.value ?? item.priceWithTax.min ?? 0,
@@ -355,11 +355,13 @@ function Detail() {
   const { slug } = useParams();
   const [product, setProduct] = useState<Product | null>(null);
   const [variant, setVariant] = useState("");
+  const [imageIndex, setImageIndex] = useState(0);
   const [error, setError] = useState("");
   const [added, setAdded] = useState(false);
   const { act, busy } = useContext(Context);
   useEffect(() => {
     setProduct(null);
+    setImageIndex(0);
     shop("product", { slug })
       .then((p) => {
         if (!p) throw new Error("Dieses Produkt wurde nicht gefunden.");
@@ -389,14 +391,21 @@ function Detail() {
       <div className="detail">
         <div className="detail-art">
           <img
-            src={productImage(product.slug)}
-            alt={`Produktbild für ${product.name}`}
+            src={productGallery(product.slug)[imageIndex]}
+            alt={`${displayProductName(product.name)} – Ansicht ${imageIndex + 1}`}
           />
-          <small>KI-bearbeitetes Produktbild · Details können abweichen</small>
+          <div className="gallery-thumbnails" aria-label="Produktansichten">
+            {productGallery(product.slug).map((src, index) => (
+              <button type="button" key={src} onClick={() => setImageIndex(index)} aria-label={`Ansicht ${index + 1}`} aria-pressed={imageIndex === index}>
+                <img src={src} alt="" />
+              </button>
+            ))}
+          </div>
+          <small>KI-bearbeitete Produktbilder · Details können abweichen</small>
         </div>
         <div className="detail-info">
           <p className="eyebrow">DIE ACCA44 AUSWAHL</p>
-          <h1>{product.name}</h1>
+          <h1>{displayProductName(product.name)}</h1>
           <p className="price">
             {money(
               chosen?.priceWithTax || product.variants[0]?.priceWithTax || 0,
@@ -487,7 +496,7 @@ function Cart() {
                 </Link>
                 <div>
                   <Link to={`/produkt/${line.productVariant.product.slug}`}>
-                    <h3>{line.productVariant.name}</h3>
+                    <h3>{displayProductName(line.productVariant.name)}</h3>
                   </Link>
                   <label>
                     Menge{" "}
@@ -687,7 +696,7 @@ function Checkout() {
             <h3>Deine Lieblingsstücke</h3>
             {order.lines.map((l) => (
               <p key={l.id}>
-                {l.quantity} × {l.productVariant.name}
+                {l.quantity} × {displayProductName(l.productVariant.name)}
               </p>
             ))}
             <Totals order={order} />
