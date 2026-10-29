@@ -14,3 +14,9 @@ export const productGallery = (slug: string): string[] =>
   productImages[slug] ? [productImages[slug], ...[1, 2, 3].map(i => `/images/products/${slug}-${i}.png`)] : [productImage(slug)];
 
 export const displayProductName = (name: string) => name.replace(/^W\d+\s+/i, '');
+
+/** Approximate edge colors of the supplied product images. */
+export const productBackground = (slug: string) => ({
+  w1122: '#fdf9f1', w1150: '#fbf6f0', w1181: '#fcf7f0',
+  w1160: '#f6eee6', w373: '#fdf8f0', w1164: '#f9f4ec',
+} as Record<string, string>)[slug] ?? '#f8f4ec';

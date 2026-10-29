@@ -11,7 +11,7 @@ import {
 } from "react-router-dom";
 import type { Operation } from "../lib/operations";
 import { shop } from "../lib/api";
-import { productImage, productGallery, displayProductName } from "../lib/product-images";
+import { productImage, productGallery, productBackground, displayProductName } from "../lib/product-images";
 import "./style.css";
 type Variant = {
   id: string;
@@ -201,7 +201,7 @@ function Catalog() {
             Lieblingsstücke entdecken <span>↗</span>
           </a>
         </div>
-        <div className="hero-art">
+        <div className="hero-art" style={{ backgroundColor: productBackground("w1122") }}>
           <span className="circle" />
           <img
             src={productImage("w1122")}
@@ -291,7 +291,7 @@ function Catalog() {
                 key={item.productId}
                 to={`/produkt/${item.slug}`}
               >
-                <div className={`product-art tone-${i % 4}`}>
+                <div className={`product-art tone-${i % 4}`} style={{ backgroundColor: productBackground(item.slug) }}>
                   <img
                     src={productImage(item.slug)}
                     alt={`Produktbild für ${item.productName}`}
@@ -389,7 +389,7 @@ function Detail() {
         ← Zur Kollektion
       </Link>
       <div className="detail">
-        <div className="detail-art">
+        <div className="detail-art" style={{ backgroundColor: productBackground(product.slug) }}>
           <img
             src={productGallery(product.slug)[imageIndex]}
             alt={`${displayProductName(product.name)} – Ansicht ${imageIndex + 1}`}

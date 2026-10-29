@@ -853,7 +853,7 @@ label select {
 }
 
 /* Keep the entire shoe visible within a consistent frame. */
-.hero-art > img, .product-art img, .detail-art > img { object-fit: contain; background: #f8f4ec; }
+.hero-art > img, .product-art img, .detail-art > img { object-fit: contain; background: inherit; }
 .product-card:hover img { transform: scale(1.025); }
 .detail-art > img { aspect-ratio: 1; }
 .gallery-thumbnails { display: flex; justify-content: center; gap: 8px; padding: 12px; flex-wrap: wrap; }
